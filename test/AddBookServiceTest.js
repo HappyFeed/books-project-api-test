@@ -1,4 +1,4 @@
-const agent = require('superagent');
+const  axios = require('axios');
 const chai = require('chai');
 const { assert } = require('chai');
 
@@ -6,21 +6,47 @@ const { expect } = chai;
 
 describe ('Test POST request', async() => {
 
-    let baseUri = 'http://localhost:8080/books';
-    let dummy = {name:'test', author:'test'};
-
-    it('POST service properly creates a new book', async() => {
-        // Act
-        const response = await agent.post(baseUri).send(dummy);
-
-        //Assert
-        expect(response.status).to.equal(200);
-        expect(response.body).to.have.property('id');
-        assert.equal(response.body.name, dummy.name);
-        assert.equal(response.body.author, dummy.author);
-
-        //delete tracks
-        agent.delete(baseUri + '/' + response.body.id);
+    const apiCall = axios.create({
+        baseURL: "http://localhost:8080",
     });
+
+    const dummy = {name:'dummyTitle', author:'dummyAuthor'};
+
+    it('POST services creates a book', async() => {
+        
+        const response = await apiCall.post('/books',dummy);
+        expect(response.status).to.equal(200);
+        expect(response.data).to.have.property('id');
+        assert.equal(response.data.name, dummy.name);
+        assert.equal(response.data.author, dummy.author);
+
+        apiCall.delete('books' + response.data.id);
+
+    });
+
+    it('POST services may not creates a empty book', async() => {
+        
+        const response = await apiCall.post('/books',{});
+        expect(response.status).to.equal(400);
+    });
+
+    it('POST services may not creates a book with name field empty', async() => {
+        
+        const response = await apiCall.post('/books',{name:'', author:'dummyAuthor'});
+        expect(response.status).to.equal(400);
+    });
+
+    it('POST services may not creates a book with author field empty', async() => {
+        
+        const response = await apiCall.post('/books',{name:'dummyName', author:''});
+        expect(response.status).to.equal(400);
+    });
+
+    it('POST services may not creates a book with incomplete data', async() => {
+        
+        const response = await apiCall.post('/books',{author:'dummyAuthor'});
+        expect(response.status).to.equal(400);
+    });
+
 
 });
