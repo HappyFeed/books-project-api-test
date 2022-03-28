@@ -34,7 +34,7 @@ describe ('Test POST request', async() => {
 
     it('POST services may not creates a book with name field empty', async() => {
         
-        const response = await apiCall.post('/books',{name:'', author:'dummyAuthor'});
+        const response = await apiCall.post('/books',{name:'', author:'AuthorNameEmpty'});
         expect(response.status).to.equal(400);
 
         apiCall.delete('/books/' + response.data.id);
@@ -42,7 +42,7 @@ describe ('Test POST request', async() => {
 
     it('POST services may not creates a book with author field empty', async() => {
         
-        const response = await apiCall.post('/books',{name:'dummyName', author:''});
+        const response = await apiCall.post('/books',{name:'NameAuthorEmpty', author:''});
         expect(response.status).to.equal(400);
 
         apiCall.delete('/books/' + response.data.id);
@@ -50,7 +50,7 @@ describe ('Test POST request', async() => {
 
     it('POST services may not creates a book with incomplete data', async() => {
         
-        const response = await apiCall.post('/books',{author:'dummyAuthor'});
+        const response = await apiCall.post('/books',{author:'AuthorNameNull'});
         expect(response.status).to.equal(400);
 
         apiCall.delete('/books/' + response.data.id);

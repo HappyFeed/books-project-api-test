@@ -10,7 +10,7 @@ describe ('Test DELETE request', async() => {
         baseURL: "http://localhost:8080",
     });
 
-    const dummy = {name:'dummyDeletePrueba1', author:'dummyAuthorDeletePrueba1'};
+    const dummy = {name:'dummyDelete', author:'dummyAuthorDelete'};
 
     it('DELETE services remove the book from the store', async() => {
         
