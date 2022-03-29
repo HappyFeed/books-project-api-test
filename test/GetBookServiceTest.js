@@ -8,7 +8,7 @@ describe ('Test GET request', async() => {
 
     //Arrange
     const apiCall = axios.create({
-        baseURL: "http://localhost:8080",
+        baseURL: "https://a-books.herokuapp.com",
     });
 
     it('GET services complete the service correct', async() => {
